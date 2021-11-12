@@ -13,7 +13,6 @@ import (
 func wuffwuff(writer http.ResponseWriter, req *http.Request) {
 	s, err := slack.SlashCommandParse(req)
 
-	fmt.Println("hello")
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
