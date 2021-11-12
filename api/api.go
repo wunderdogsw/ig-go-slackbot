@@ -1,11 +1,7 @@
 package main
 
 import (
-	"fmt" // formatting package
-
-	"os" // Accessing stdinput
-
-	"github.com/joho/godotenv"  // for accessing .env variables
+	"fmt"
 	"github.com/slack-go/slack" //github.com slack library
 	"net/http"
 )
@@ -14,13 +10,12 @@ func wuffwuff(writer http.ResponseWriter, req *http.Request) {
 	s, err := slack.SlashCommandParse(req)
 
 	fmt.Println("hello")
-	writer.Write([]byte("hello"))
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	if !s.ValidateToken(os.Getenv("SLACK_BOT_TOKEN")) {
+	if !s.ValidateToken("xoxb-2636063108304-2715066825696-RuuvlVmWhRWijRYXipwdClLR") {
 		writer.WriteHeader(http.StatusUnauthorized)
 		return
 	}
@@ -35,16 +30,7 @@ func wuffwuff(writer http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	err := godotenv.Load()
-
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "9000"
-	}
 	http.HandleFunc("/wuffwuff", wuffwuff)
-	http.ListenAndServe(":"+port, nil)
+
+	http.ListenAndServe(":5000", nil)
 }
