@@ -14,7 +14,6 @@ func wuffwuff(writer http.ResponseWriter, req *http.Request) {
 	s, err := slack.SlashCommandParse(req)
 
 	fmt.Println("hello")
-	writer.Write([]byte("hello"))
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -34,6 +33,10 @@ func wuffwuff(writer http.ResponseWriter, req *http.Request) {
 	}
 }
 
+func hello(writer http.ResponseWriter, req *http.Request) {
+	fmt.Fprintf(writer, "hello\n")
+}
+
 func main() {
 	err := godotenv.Load()
 
@@ -46,5 +49,6 @@ func main() {
 		port = "9000"
 	}
 	http.HandleFunc("/wuffwuff", wuffwuff)
+	http.HandleFunc("/hello", hello)
 	http.ListenAndServe(":"+port, nil)
 }
